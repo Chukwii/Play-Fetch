@@ -16,13 +16,21 @@ public class DestroyOutOfBounds : MonoBehaviour
     void Update()
     {
         // if gameObjeect goes out of the player's view it will be destroyed
-        if(transform.position.z > topBound)
+        if(transform.position.z > topBound || transform.position.x > 20f)
         {
             Destroy(gameObject);
-        } else if(transform.position.z < lowerBound)
+        } else if(transform.position.z < lowerBound || transform.position.x < -20f)
         {
-            Debug.Log("Game Over");
-            Destroy(gameObject);
+            Destroy(this.gameObject);
+            if (GameObject.FindObjectOfType<SpawnManager>().lives > 0)
+            {
+                GameObject.FindObjectOfType<SpawnManager>().lives -= 1;
+                Debug.Log("Lives = " + GameObject.FindObjectOfType<SpawnManager>().lives);
+            }
+            else if (GameObject.FindObjectOfType<SpawnManager>().lives <= 0)
+            {
+                Debug.Log("Game Over");
+            }
         }
     }
 }

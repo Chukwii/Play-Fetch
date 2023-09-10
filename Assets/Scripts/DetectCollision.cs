@@ -18,7 +18,23 @@ public class DetectCollision : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(gameObject);
-        Destroy(other.gameObject);
+        if(other.tag == "Food")
+        {
+            this.gameObject.GetComponent<AnimalHunger>().FeedAnimal(1);
+            Destroy(other.gameObject);
+        }
+        if(other.tag == "Player")
+        {
+            Destroy(this.gameObject);
+            if(GameObject.FindObjectOfType<SpawnManager>().lives > 0)
+            {
+                GameObject.FindObjectOfType<SpawnManager>().lives -= 1;
+                Debug.Log("Lives = " + GameObject.FindObjectOfType<SpawnManager>().lives);
+            }
+            else if(GameObject.FindObjectOfType<SpawnManager>().lives <= 0)
+            {
+                Debug.Log("Game Over");
+            }
+        }
     }
 }
